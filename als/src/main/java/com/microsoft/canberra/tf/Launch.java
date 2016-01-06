@@ -168,21 +168,24 @@ public class Launch {
       final int maxIterations = injector.getNamedInstance(MaxIterations.class);
 
       final Configuration loaderConfig = new DataLoadingRequestBuilder()
-          .setMemoryMB(memWorker)
           .setInputPath(inputPath)
           .renewFailedEvaluators(false)
           .setInputFormatClass(SparseVectorInputFormat.class)
           .setNumberOfDesiredSplits(numPartitions)
           .loadIntoMemory(false)
+          .addComputeRequest(EvaluatorRequest.newBuilder()
+              .setNumber(1)
+              .setMemory(memMaster)
+              .build())
+          .addDataRequest(EvaluatorRequest.newBuilder()
+              .setNumber(numPartitions)
+              .setMemory(memWorker)
+              .build())
           .setDriverConfigurationModule(DriverConfiguration.CONF
               .set(DriverConfiguration.GLOBAL_LIBRARIES, EnvironmentUtils.getClassLocation(Driver.class))
               .set(DriverConfiguration.DRIVER_IDENTIFIER, "TF")
               .set(DriverConfiguration.ON_CONTEXT_ACTIVE, Driver.ContextActiveHandler.class)
               .set(DriverConfiguration.ON_TASK_COMPLETED, Driver.TaskCompletedHandler.class))
-          .setComputeRequest(EvaluatorRequest.newBuilder()
-              .setNumber(1)
-              .setMemory(memMaster)
-              .build())
           .build();
 
       final Configuration config = Tang.Factory.getTang()
