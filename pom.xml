@@ -18,7 +18,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <hadoop.version>2.6.0</hadoop.version>
-        <reef.version>0.11.0-incubating</reef.version>
+        <reef.version>0.14.0-SNAPSHOT</reef.version>
     </properties>
 
     <build>

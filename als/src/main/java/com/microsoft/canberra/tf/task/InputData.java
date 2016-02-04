@@ -48,7 +48,7 @@ public final class InputData {
 
     this.documents = Collections.unmodifiableList(new ArrayList<Document>() {{
       for (final Pair<LongWritable, Document> keyValue : dataSet) {
-        add(keyValue.second);
+        add(keyValue.getSecond());
       }
     }});
 
